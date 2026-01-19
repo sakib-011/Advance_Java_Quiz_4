@@ -28,12 +28,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests( req->
                 req
                         .requestMatchers("/api/update/**" , "/api/delete/**").hasRole("ADMIN")
-                        .requestMatchers("/api/authentication/**").permitAll()
+                        .requestMatchers("/api/authentication/**" , "/login" , "/").permitAll()
                         .requestMatchers("/api/**").permitAll()
 
                         .anyRequest().authenticated()
         ).addFilterBefore(jwtAuthenticationProvider , UsernamePasswordAuthenticationFilter.class);
 
+
+        httpSecurity.formLogin(lf->
+                lf.loginPage("/login")
+                        .failureUrl("/login?error"));
 
        return httpSecurity.build();
     }
