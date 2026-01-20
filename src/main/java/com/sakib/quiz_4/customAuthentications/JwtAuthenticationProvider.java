@@ -55,6 +55,7 @@ public class JwtAuthenticationProvider extends OncePerRequestFilter {
                 List<SimpleGrantedAuthority> ROLES = new ArrayList<>();
 
                 for(String role : roles){
+                    System.out.println("Role : " + role);
                     ROLES.add(new SimpleGrantedAuthority("ROLE_" + role));
                 }
 

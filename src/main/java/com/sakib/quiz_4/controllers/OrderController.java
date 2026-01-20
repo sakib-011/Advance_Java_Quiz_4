@@ -28,7 +28,7 @@ public class OrderController {
     }
 
     @Cacheable(cacheNames = "orderById" , key = "#orderId")
-    @GetMapping("/api/get-order-id/{orderId}")
+    @GetMapping("/api/get-order-id{orderId}")
     public Order getOrderById(@PathVariable String orderId){
         return orderService.getOrder(orderId);
     }
@@ -45,19 +45,19 @@ public class OrderController {
         return orderService.getOrderByProductName(product_name);
     }
 
-    @Cacheable(cacheNames = "TotalRevenue")
+
     @GetMapping("/api/get-total-revenu")
     public Double getTotalRevenue(){
         return orderService.getTotalRevenue();
     }
 
-    @Cacheable(cacheNames = "TodayTotalOrderCount")
+
     @GetMapping("/api/get-today-order-count")
     public Integer getTotalOrderToday(){
         return orderService.getTodayOrder();
     }
 
-    @Cacheable(cacheNames = "TotalPendingOrder")
+
     @GetMapping("/api/get-pending-order-count")
     public Integer getPendingOderCount(){
         return orderService.getPendingOrderToday();
@@ -68,9 +68,6 @@ public class OrderController {
 //    Post Mapping
     @Caching(evict = {
             @CacheEvict(cacheNames = "orders" , allEntries = true),
-            @CacheEvict(cacheNames = "TotalRevenue"),
-            @CacheEvict(cacheNames = "TodayTotalOrderCount"),
-            @CacheEvict(cacheNames = "TotalPendingOrder")
     })
     @PostMapping("/api/add-new-order")
     public Boolean addNewOrder(@RequestBody Order order){
@@ -90,24 +87,25 @@ public class OrderController {
 
     @Caching(evict = {
             @CacheEvict(cacheNames = "orders" , allEntries = true),
-            @CacheEvict(cacheNames = "TotalRevenue"),
-            @CacheEvict(cacheNames = "TodayTotalOrderCount"),
-            @CacheEvict(cacheNames = "TotalPendingOrder" ),
             @CacheEvict(cacheNames = "orderByProductName" , allEntries = true),
             @CacheEvict(cacheNames = "orderByCustomerName" , allEntries = true),
             @CacheEvict(cacheNames = "orderById" ,  key = "#order.id")
     })
     @PutMapping("/api/update/order")
     public Boolean updateOrder(@RequestBody Order order){
+
+        System.out.println("Update Order : ");
+        System.out.println("Order Product Name : " + order.getProductName());
+        System.out.println("Customer Name : " + order.getCustomerName());
+
+        order.setPurchaseDate(orderService.getOrder(order.getId()).getPurchaseDate());
+
         return orderService.updateOrder(order);
     }
 
 
     @Caching(evict = {
             @CacheEvict(cacheNames = "orders" , allEntries = true),
-            @CacheEvict(cacheNames = "TotalRevenue"),
-            @CacheEvict(cacheNames = "TodayTotalOrderCount"),
-            @CacheEvict(cacheNames = "TotalPendingOrder"),
             @CacheEvict(cacheNames = "orderByProductName" , allEntries = true),
             @CacheEvict(cacheNames = "orderByCustomerName" , allEntries = true),
             @CacheEvict(cacheNames = "orderById" , key = "#orderId")

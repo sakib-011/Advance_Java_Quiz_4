@@ -74,7 +74,7 @@ public class OrderService implements OrderServiceInterface {
     @Override
     public Integer getPendingOrderToday() {
         List<Order> orderList = getAllOrder();
-        return (int) orderList.stream().filter(o-> o.getPurchaseDate().equals(LocalDate.now()) && o.getOrderStatus().equals("Pending")).count();
+        return (int) orderList.stream().filter(o-> o.getPurchaseDate()!=null && o.getPurchaseDate().equals(LocalDate.now()) && o.getOrderStatus().equals("Pending")).count();
     }
 
     @Override
