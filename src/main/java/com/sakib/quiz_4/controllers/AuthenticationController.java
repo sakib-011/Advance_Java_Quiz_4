@@ -34,8 +34,10 @@ public class AuthenticationController {
     @PostMapping("/login")
     public String adminLogin(@ModelAttribute Admin admin , HttpServletResponse httpServletResponse){
 
+        System.out.println("I am here");
         if(!admin.getPassword().isEmpty()){
             if(admin.getUsername().equals(admin.getPassword())){
+                System.out.println("Success");
 
                 String jwtToken = jwtService.generateJwtToken(admin.getUsername() , List.of("ADMIN" , "SUPER_ADMIN"));
 

@@ -36,13 +36,17 @@ public class JwtAuthenticationProvider extends OncePerRequestFilter {
 
         if(cookies != null){
             for(Cookie cookie : cookies){
+                System.out.println("Cookie : " + cookie.getName() + " :: "+ cookie.getValue());
                 if(cookie.getName().equals("my-token")){
+                    System.out.println("Token : " + cookie.getValue());
                     token = cookie.getValue();
                 }
             }
         }
         if(token == null){
             SecurityContextHolder.clearContext();
+            filterChain.doFilter(request ,response);
+            return;
         } else{
             try{
                 Claims claims = jwtService.parseJwtToken(token);

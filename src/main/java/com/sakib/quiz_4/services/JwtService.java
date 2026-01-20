@@ -29,7 +29,7 @@ public class JwtService {
                 .subject(subject)
                 .signWith(secretKey)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 900000))
+                .expiration(new Date(System.currentTimeMillis() + 60*60*60*60))
                 .compact();
 
     }
